@@ -6,32 +6,29 @@ def connectDatabase():
     database = instance.database('karan-db')
     return database
 
-def insertData(database):
+def insertData(database, dataToInsert):
     try:
-        dataToInsert = [(2,), (3,), (4,), (5,)]
         with database.batch() as batch:
             batch.insert(
                 table='events',
                 columns=['id'], 
                 values=dataToInsert  
             )
-        print("Data Inserted Successfuly")
+        return "Data Inserted Successfuly"
     except Exception as e:
-        print(f"Data insertion failed because {e}")
+        return f"Data insertion failed because {e}"
         
 def fetchData(database):
     try:
         query = "SELECT id FROM events"
         with database.snapshot() as snapshot:
             results = snapshot.execute_sql(query)
-        for row in results:
-            print(row)
-
-        print("Data Fetched Successfuly")
+        return list(results)
     except Exception as e:
-        print(f"Data Fetch failed because {e}")
+        return f"Data Fetch failed because {e}"
     
 if __name__=="__main__":
     db = connectDatabase()
-    insertData(db)
-    fetchData(db)
+    print(insertData(db, [[18]]))
+    respose = fetchData(db)
+    print(respose)
