@@ -18,7 +18,7 @@ def insertData(database, dataToInsert):
     try:
         with database.batch() as batch:
             batch.insert(
-                table='events',
+                table='test',
                 columns=['id'], 
                 values=dataToInsert  
             )
@@ -28,7 +28,7 @@ def insertData(database, dataToInsert):
         
 def fetchData(database):
     try:
-        query = "SELECT id FROM events"
+        query = "SELECT id FROM test"
         with database.snapshot() as snapshot:
             results = snapshot.execute_sql(query)
         return list(results)
