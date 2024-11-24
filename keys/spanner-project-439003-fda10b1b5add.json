@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "spanner-project-439003",
+  "private_key_id": "fda10b1b5add973e5879db69af5ae4c35e1b5422",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWDQtjFQPoRc6P\nQITMFWEqvlCCfi8tks20xV4FKH+NvI40LYpXwkAEW0KW/mS7ei6e5LUsY97GQSjF\nfARg8XluYHOCcgiJQHQhi/ls+2CjP4UHcQIENA0zm4uosZChAlbnj9f6r0A0RMeC\nafYHPO5kRXQo/2d5Bee8/9+BeA04kYg+jasQWDznF8DSnU7J+9WadWQclFLDMmAe\nUbol+wp0uI8tVtNv0yH3qQPhjXtnDO2ZehZSlLwm6L21czKCUPEXQ1Lf+nX4m51o\nD9LznY73bJCMKUonX4hoapThnQGsIey37gbjBuxPIkEGY3SMmQXR2p9PbJdOs2HR\nYfKf46R/AgMBAAECggEAKISImsVQG4gXPROb75u+bF5hFAp5uLk4uhbAIN7VIknG\na0cRkGIjRw/VT4qxG7HZoFcvmkr/UOzloFhE5erfrw6P3uniBsUOFomN+dytoskz\nz8BK/uuxcgroCVMvSuML+0JFwlypHRvF3kBbg2w7vfxNrDMIbaa6ApM2xiWo7wN4\nquahoux/YR8pGNX5TG67DE7Fkjt4YDnj0/wqIMqsTRzMow6FtzDNn44wgd9ACWd5\nZLwyfYvgF7/njYEXfMuzuKviFjRh0LrAsk5O9EQfGXTeyo33TFzf/O276AMhjDtj\nVc7ayNp+rGI6dYO9dCUohSc2pJYG5VutsbfT4+ncFQKBgQDxLFVnO3BvT/DqzrcH\ndbFi00JfYsRezNNuaa+o2qmpfwM/4ov1apo80oMW1RCh7yketYzQZwYimfbbtD/H\nycAkOOUlny/6Svoap/tbwH/t7vlCt5bYWTqHEnOAPShMbbYZ8utXrek+UZgXCc4J\nOlOIDTI3G2IjrmLyxdbqFKTVrQKBgQDjNdocxuFrmQ9JKgsxlLH4IzVqLB/nq2pY\nLSB7PYmBu/TP2N46gbAc9+r6WPBUmaZw26kGcvaFFl7TC6PCbSMZUTxue1C4TfYB\no9GexyrO0pyXcMgEx0eNj8BwnKzjZirevqaS3BDX74Jd6YMLI6mnsbLnl++tQ9UX\nXWU3NRBwWwKBgAiGxboxmscEr4LNriDgY1YYG/edWU30teDocaJpoKfyap3+l24k\nx7EwzBupir3+45hHWOQhUFE22khoNf0NP/LH5CoRV7PkpLT+jV9wDdXOphdawEWD\n2hLebyDwiJUzJ8YBFZry9hUS82qVGSiwXDWqKcVS/YQ/bRYiMnfyJOW9AoGBALMw\nt3HWj9VyAxIqrGVP5gPSkL/JSOhG0jn0bReE8rt0ZqC9YpY1zZUrGRCTsAaonxGG\ny4kghbd0axh6p44g0HuZC9X+Pyz7nzav4hQc82/lvkXZVoYePBoy8wxdJCS7YLgH\nGAverxH9/IzgKs9QMu7kQDpSI148jwQ8TiT6HprdAoGAZZ+jcnRAozyQcsN8YBmO\nJoHPXEnuUW08xj1t6Y+iGKWlgIXC8bXMWgq+l5oCL/3aASYaxOZAk6BjSLTEtb7S\nzn63owJ7oS8jckiqZu8p/W41yWSVqDfTVxvJ1T5TOkxnsntY0qaPx6T8S3JZpakL\nfj56z33Kjr6NEOsNw1PaLAI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "serializableschedulers@spanner-project-439003.iam.gserviceaccount.com",
+  "client_id": "111667585228388545984",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/serializableschedulers%40spanner-project-439003.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
