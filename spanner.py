@@ -12,16 +12,23 @@ def connect_to_spanner_instance(service_account_path, instance_id, database_id):
     database = instance.database(database_id)
     return database
 
+def getkambojDbInstance():
+    service_account_path_1_kkamobj = "./keys/spanner-project-439003-fda10b1b5add.json"
+    instance_id_1_kkamboj = "spanner-dds"
+    database_id_1_kkamboj = "karan-db"
+
+    source_db = connect_to_spanner_instance(service_account_path_1_kkamobj, instance_id_1_kkamboj, database_id_1_kkamboj)
+    return source_db
+
+def getnchaudDbInstance():
+    service_account_path_2_nchaud = "./keys/key_2_nchaud.json"
+    instance_id_2_nchaud = "bookmyevent"
+    database_id_2_nchaud = "ddsdb"
+    source_db = connect_to_spanner_instance(service_account_path_2_nchaud, instance_id_2_nchaud, database_id_2_nchaud)
+    return source_db
+
 def connectDatabase():
-    json_key_path = "C:\\Users\\Acer\\Documents\\Study\\DDS\\BookMyEvent\\keys\\dds-112.json"  # Replace with your key file path
-    credentials = service_account.Credentials.from_service_account_file(json_key_path)
-
-    spanner_client = spanner.Client(credentials=credentials)
-    
-    print(f"Connected to project: {spanner_client.project}")
-
-    instance = spanner_client.instance(instance_id="bookmyevent")
-    database = instance.database(database_id="ddsdb")
+    database = getkambojDbInstance()
     return database
 
 def insertData(database, tableName, columns, dataToInsert):
@@ -46,20 +53,10 @@ def fetchData(database, tableName):
         return f"Data Fetch failed because {e}"
     
 if __name__=="__main__":
-    #Path to service accounts
-    service_account_path_1_kkamobj = "/Users/nishtha/Desktop/Courses/CSE512/Project/BookMyEvent/key_1_kkamboj.json"
-    service_account_path_2_nchaud = "/Users/nishtha/Desktop/Courses/CSE512/Project/BookMyEvent/key_2_nchaud.json"
+    print("HERE")
+    source_db_1 = getkambojDbInstance()
+    source_db_2 = getnchaudDbInstance()
 
-    instance_id_1_kkamboj = "spanner-dds"
-    database_id_1_kkamboj = "karan-db"
-
-    instance_id_2_nchaud = "bookmyevent"
-    database_id_2_nchaud = "ddsdb"
-
-    source_db_1 = connect_to_spanner_instance(service_account_path_1_kkamobj, instance_id_1_kkamboj, database_id_1_kkamboj)
-    source_db_2 = connect_to_spanner_instance(service_account_path_2_nchaud, instance_id_2_nchaud, database_id_2_nchaud)
-
-    # replicate_data(source_db, target_db)
     print(source_db_1)
     print(source_db_2)
 
@@ -67,7 +64,7 @@ if __name__=="__main__":
     columns = ["user_id", "name", "email", "phone_number", "region", "created_at"]
     dataToInsert = [
         (2, 'Alice', 'alice@example.com', '123-456-7890', 'North America', datetime.now(timezone.utc)),
-        (3, 'Bob', 'bob@example.com', '987-654-3210', 'Europe', datetime.now(timezone.utc)),
+        (3, 'Shan', 'bob@example.com', '987-654-3210', 'Europe', datetime.now(timezone.utc)),
     ]
     print(insertData(db, "users", columns, dataToInsert))
     respose = fetchData(db, "users")
