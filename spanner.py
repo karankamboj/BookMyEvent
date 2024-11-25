@@ -14,15 +14,8 @@ def connect_to_spanner_instance(service_account_path, instance_id, database_id):
     return database
     
 def connectDatabase():
-    json_key_path = "C:\\Users\\Acer\\Documents\\Study\\DDS\\BookMyEvent\\keys\\spanner-project-439003-fda10b1b5add.json"  # Replace with your key file path
-    credentials = service_account.Credentials.from_service_account_file(json_key_path)
-
-    spanner_client = spanner.Client(credentials=credentials, project="spanner-project-439003")
-    
-    print(f"Connected to project: {spanner_client.project}")
-
-    instance = spanner_client.instance('spanner-dds')
-    database = instance.database('karan-db')
+   
+    database = getnchaudDbInstance()
     return database
 
 def insertData(database, dataToInsert):
@@ -39,32 +32,36 @@ def insertData(database, dataToInsert):
         
 def fetchData(database):
     try:
-        query = "SELECT id FROM test"
+        query = "SELECT * FROM users"
         with database.snapshot() as snapshot:
             results = snapshot.execute_sql(query)
         return list(results)
     except Exception as e:
         return f"Data Fetch failed because {e}"
-
-
-if __name__ == "__main__":
-        #Path to service accounts
-    service_account_path_1_kkamobj = "/Users/nishtha/Desktop/Courses/CSE512/Project/BookMyEvent/key_1_kkamboj.json"
-    service_account_path_2_nchaud = "/Users/nishtha/Desktop/Courses/CSE512/Project/BookMyEvent/key_2_nchaud.json"
+def getkambojDbInstance():
+    service_account_path_1_kkamobj = "./keys/key_1_kkamboj.json"
 
     instance_id_1_kkamboj = "spanner-dds"
     database_id_1_kkamboj = "karan-db"
 
+    source_db = connect_to_spanner_instance(service_account_path_1_kkamobj, instance_id_1_kkamboj, database_id_1_kkamboj)
+    return source_db
+
+def getnchaudDbInstance():
+    service_account_path_2_nchaud = "./keys/key_2_nchaud.json"
+
     instance_id_2_nchaud = "bookmyevent"
     database_id_2_nchaud = "ddsdb"
 
-    source_db_1 = connect_to_spanner_instance(service_account_path_1_kkamobj, instance_id_1_kkamboj, database_id_1_kkamboj)
-    source_db_2 = connect_to_spanner_instance(service_account_path_2_nchaud, instance_id_2_nchaud, database_id_2_nchaud)
+    source_db = connect_to_spanner_instance(service_account_path_2_nchaud, instance_id_2_nchaud, database_id_2_nchaud)
 
-    # replicate_data(source_db, target_db)
-    print(source_db_1)
-    print(source_db_2)
-    
-    print(insertData(db, [[18]]))
-    respose = fetchData(db)
+    return source_db
+
+
+
+if __name__ == "__main__":
+   
+    source_db_2 = getnchaudDbInstance()
+    print(insertData(source_db_2, [[19]]))
+    respose = fetchData(source_db_2)
     print(respose)
