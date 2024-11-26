@@ -12,6 +12,7 @@ def run_sync_task():
     This will keep syncing data from the write DB to the read-only DB every 5 minutes.
     """
     syncDatabase.startSyncJob()  # Starts the sync job which runs every 5 minutes
+    
 def before_first_request():
     """
     This function is called before the first request to the Flask app.
@@ -21,6 +22,7 @@ def before_first_request():
     sync_thread = threading.Thread(target=run_sync_task)
     sync_thread.daemon = True  # Ensure that the thread exits when the main program exits
     sync_thread.start()
+
 @app.route("/")
 def hello():
     return "Hello, World!"
@@ -30,13 +32,9 @@ def fetchData():
     table_name = request.args.get('table_name')
     return spanner.fetchData(table_name)
 
-@app.route('/insert', methods=['POST'])
-def insertData():
-
-    # Parse request JSON
-    request_data = request.get_json()
+def validateInsertRequest(request_data):
     if not request_data:
-        return jsonify({"error": "Invalid JSON payload"}), 400
+        raise Exception({"error": "Invalid JSON payload"})
 
     # Extract required fields
     table_name = request_data.get("table_name")
@@ -45,7 +43,15 @@ def insertData():
     
      # Validate the input
     if not table_name or not columns or not values:
-        return jsonify({"error": "table_name, columns, and values are required"}), 400
+        raise Exception({"error": "table_name, columns, and values are required"})
+    return table_name, columns, values
+
+@app.route('/insert', methods=['POST'])
+def insertData():
+
+    # Parse request JSON
+    request_data = request.get_json()
+    table_name, columns, values = validateInsertRequest(request_data)
     
     result = spanner.insertData(table_name, columns, values)
     return jsonify({"message": result}), 200 if "successfully" in result.lower() else 500

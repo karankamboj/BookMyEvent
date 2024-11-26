@@ -3,6 +3,7 @@ import schedule
 from datetime import datetime
 from google.cloud import spanner
 import databaseConfig
+
 def syncData():
     print(f"Syncing data at {datetime.now()}")
     source_db_1 = databaseConfig.getWriteDbInstance()

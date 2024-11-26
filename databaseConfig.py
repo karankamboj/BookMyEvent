@@ -5,8 +5,6 @@ from google.oauth2 import service_account
 from datetime import datetime, timezone
 from enum import Enum
 from constants import OperationType
-
-
     
 def connect_to_spanner_instance(service_account_path, instance_id, database_id):
     # Set the environment variable for authentication
