@@ -4,8 +4,6 @@ from google.auth import default
 from google.oauth2 import service_account
 from datetime import datetime, timezone
 from enum import Enum
-
-
     
 def connect_to_spanner_instance(service_account_path, instance_id, database_id):
     # Set the environment variable for authentication
@@ -31,6 +29,5 @@ def getWriteDbInstance():
     return source_db
 
 def connectDatabase(OperationType=None):
-
     database = getWriteDbInstance()
     return database

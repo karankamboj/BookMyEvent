@@ -5,6 +5,7 @@ from google.oauth2 import service_account
 from datetime import datetime, timezone
 from enum import Enum
 import databaseConfig
+import syncDatabase
 
 
 class OperationType(Enum):
@@ -34,14 +35,14 @@ def fetchData(tableName):
 
 def fetchDataUtil(database, tableName):
     try:
-        query = "SELECT * FROM "+tableName
+        query = "SELECT * FROM "+ tableName
         with database.snapshot() as snapshot:
             results = snapshot.execute_sql(query)
         return list(results)
     except Exception as e:
         return f"Data Fetch failed because {e}"
     
-if __name__=="__main__":
+def test():
     print("HERE")
     source_db_1 = databaseConfig.getReadDbInstance()
     source_db_2 = databaseConfig.getWriteDbInstance()
@@ -57,3 +58,12 @@ if __name__=="__main__":
     print(insertData("users", columns, dataToInsert))
     respose = fetchData("users")
     print(respose)
+
+def test2():
+    source_db_1 = databaseConfig.getReadDbInstance()
+    source_db_2 = databaseConfig.getWriteDbInstance()
+    syncDatabase.sync_spanner_databases(source_db_1,source_db_2)
+
+
+if __name__=="__main__":
+    test2()
