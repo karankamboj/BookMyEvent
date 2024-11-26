@@ -4,39 +4,13 @@ from google.auth import default
 from google.oauth2 import service_account
 from datetime import datetime, timezone
 from enum import Enum
+import databaseConfig
 
 
 class OperationType(Enum):
     READ = "READ"
     WRITE = "WRITE"
-    
-def connect_to_spanner_instance(service_account_path, instance_id, database_id):
-    # Set the environment variable for authentication
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account_path
-    client = spanner.Client()
-    instance = client.instance(instance_id)
-    database = instance.database(database_id)
-    return database
 
-def getReadDbInstance():
-    service_account_path_1_kkamobj = "./keys/spanner-project-439003-fda10b1b5add.json"
-    instance_id_1_kkamboj = "spanner-dds"
-    database_id_1_kkamboj = "karan-db"
-
-    source_db = connect_to_spanner_instance(service_account_path_1_kkamobj, instance_id_1_kkamboj, database_id_1_kkamboj)
-    return source_db
-
-def getWriteDbInstance():
-    service_account_path_2_nchaud = "./keys/key_2_nchaud.json"
-    instance_id_2_nchaud = "bookmyevent"
-    database_id_2_nchaud = "ddsdb"
-    source_db = connect_to_spanner_instance(service_account_path_2_nchaud, instance_id_2_nchaud, database_id_2_nchaud)
-    return source_db
-
-def connectDatabase(OperationType=None):
-
-    database = getWriteDbInstance()
-    return database
 
 def insertDataUtil(database, tableName, columns, dataToInsert):
     try:
@@ -51,11 +25,11 @@ def insertDataUtil(database, tableName, columns, dataToInsert):
         return f"Data insertion failed because {e}"
 
 def insertData(tableName, columns, dataToInsert):
-    database = connectDatabase()
+    database = databaseConfig.connectDatabase()
     return insertDataUtil(database, tableName, columns, dataToInsert)
         
 def fetchData(tableName):
-    database = connectDatabase()
+    database = databaseConfig.connectDatabase()
     return fetchDataUtil(database, tableName)
 
 def fetchDataUtil(database, tableName):
@@ -69,8 +43,8 @@ def fetchDataUtil(database, tableName):
     
 if __name__=="__main__":
     print("HERE")
-    source_db_1 = getReadDbInstance()
-    source_db_2 = getWriteDbInstance()
+    source_db_1 = databaseConfig.getReadDbInstance()
+    source_db_2 = databaseConfig.getWriteDbInstance()
 
     print(source_db_1)
     print(source_db_2)
