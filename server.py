@@ -37,8 +37,8 @@ def run_flask_app(port):
     app.run(host='0.0.0.0', port=port)
 
 if __name__ == '__main__':
-    # Enable App Auto Restart : Debug mod
-    app.run(debug=True)
+    # # Enable App Auto Restart : Debug mod
+    # app.run(debug=True)
 
     # Create separate processes for each Flask instance on different ports
     process1 = Process(target=run_flask_app, args=(5001,))
