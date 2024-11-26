@@ -1,9 +1,26 @@
 from flask import Flask, request, jsonify
+import threading
 import spanner
 from multiprocessing import Process
+import syncDatabase
 
 app = Flask(__name__)
 
+def run_sync_task():
+    """
+    Runs the sync task in the background.
+    This will keep syncing data from the write DB to the read-only DB every 5 minutes.
+    """
+    syncDatabase.startSyncJob()  # Starts the sync job which runs every 5 minutes
+def before_first_request():
+    """
+    This function is called before the first request to the Flask app.
+    We will start the sync task here in a background thread.
+    """
+    print("Starting sync task in background...")
+    sync_thread = threading.Thread(target=run_sync_task)
+    sync_thread.daemon = True  # Ensure that the thread exits when the main program exits
+    sync_thread.start()
 @app.route("/")
 def hello():
     return "Hello, World!"
@@ -39,6 +56,7 @@ def run_flask_app(port):
 if __name__ == '__main__':
     # # Enable App Auto Restart : Debug mod
     # app.run(debug=True)
+    before_first_request()
 
     # Create separate processes for each Flask instance on different ports
     process1 = Process(target=run_flask_app, args=(5001,))

@@ -1,4 +1,13 @@
+import time
+import schedule
+from datetime import datetime
 from google.cloud import spanner
+import databaseConfig
+def syncData():
+    print(f"Syncing data at {datetime.now()}")
+    source_db_1 = databaseConfig.getWriteDbInstance()
+    source_db_2 = databaseConfig.getReadDbInstance()
+    sync_spanner_databases(source_db_1, source_db_2)
 
 def sync_spanner_databases(source_db, target_db):
     """
@@ -57,3 +66,17 @@ def sync_spanner_databases(source_db, target_db):
     for table_name in table_names:
         print(f"Syncing table: {table_name}")
         sync_table_data(table_name)
+
+def startSyncJob():
+    """
+    Schedules the sync task to run every 5 minutes.
+    """
+    # Schedule the sync to run every 1 minutes
+    schedule.every(60).seconds.do(syncData)
+    
+    print("Sync job started.")
+    
+    # Run the scheduler
+    while True:
+        schedule.run_pending()
+        time.sleep(1)  # Sleep to prevent busy-waiting

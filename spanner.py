@@ -66,12 +66,3 @@ def test():
     print(insertData("users", columns, dataToInsert))
     respose = fetchData("users")
     print(respose)
-
-def test2():
-    source_db_1 = databaseConfig.getReadDbInstance()
-    source_db_2 = databaseConfig.getWriteDbInstance()
-    syncDatabase.sync_spanner_databases(source_db_1,source_db_2)
-
-
-if __name__=="__main__":
-    test2()
