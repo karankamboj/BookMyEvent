@@ -4,6 +4,7 @@ from google.auth import default
 from google.oauth2 import service_account
 from datetime import datetime, timezone
 from enum import Enum
+from constants import OperationType
 
 
     
@@ -30,7 +31,10 @@ def getWriteDbInstance():
     source_db = connect_to_spanner_instance(service_account_path_2_nchaud, instance_id_2_nchaud, database_id_2_nchaud)
     return source_db
 
-def connectDatabase(OperationType=None):
+def connectDatabase(operationType: OperationType = None):
 
-    database = getWriteDbInstance()
-    return database
+    if operationType == operationType.READ:
+        return getReadDbInstance()
+    elif operationType == operationType.WRITE:
+        return getWriteDbInstance()
+    raise Exception(f"Invalid operation")

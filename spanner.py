@@ -5,11 +5,7 @@ from google.oauth2 import service_account
 from datetime import datetime, timezone
 from enum import Enum
 import databaseConfig
-
-
-class OperationType(Enum):
-    READ = "READ"
-    WRITE = "WRITE"
+from constants import OperationType
 
 
 def insertDataUtil(database, tableName, columns, dataToInsert):
@@ -25,11 +21,11 @@ def insertDataUtil(database, tableName, columns, dataToInsert):
         return f"Data insertion failed because {e}"
 
 def insertData(tableName, columns, dataToInsert):
-    database = databaseConfig.connectDatabase()
+    database = databaseConfig.connectDatabase(OperationType.WRITE)
     return insertDataUtil(database, tableName, columns, dataToInsert)
         
 def fetchData(tableName):
-    database = databaseConfig.connectDatabase()
+    database = databaseConfig.connectDatabase(OperationType.READ)
     return fetchDataUtil(database, tableName)
 
 def fetchDataUtil(database, tableName):
@@ -40,6 +36,7 @@ def fetchDataUtil(database, tableName):
         return list(results)
     except Exception as e:
         return f"Data Fetch failed because {e}"
+    
 def testCode():
     print("HERE")
     source_db_1 = databaseConfig.getReadDbInstance()
@@ -56,5 +53,6 @@ def testCode():
     print(insertData("users", columns, dataToInsert))
     respose = fetchData("users")
     print(respose)
+
 if __name__=="__main__":
     testCode()
