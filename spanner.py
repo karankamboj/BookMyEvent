@@ -40,8 +40,7 @@ def fetchDataUtil(database, tableName):
         return list(results)
     except Exception as e:
         return f"Data Fetch failed because {e}"
-    
-if __name__=="__main__":
+def testCode():
     print("HERE")
     source_db_1 = databaseConfig.getReadDbInstance()
     source_db_2 = databaseConfig.getWriteDbInstance()
@@ -57,3 +56,5 @@ if __name__=="__main__":
     print(insertData("users", columns, dataToInsert))
     respose = fetchData("users")
     print(respose)
+if __name__=="__main__":
+    testCode()
