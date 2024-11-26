@@ -11,6 +11,7 @@ import syncDatabase
 class OperationType(Enum):
     READ = "READ"
     WRITE = "WRITE"
+from constants import OperationType
 
 
 def insertDataUtil(database, tableName, columns, dataToInsert):
@@ -26,12 +27,19 @@ def insertDataUtil(database, tableName, columns, dataToInsert):
         return f"Data insertion failed because {e}"
 
 def insertData(tableName, columns, dataToInsert):
-    database = databaseConfig.connectDatabase()
+    database = databaseConfig.connectDatabase(OperationType.WRITE)
     return insertDataUtil(database, tableName, columns, dataToInsert)
+
         
 def fetchData(tableName):
-    database = databaseConfig.connectDatabase()
-    return fetchDataUtil(database, tableName)
+    try:
+        #Fetch changes from Read Only Database
+        database = databaseConfig.connectDatabase(OperationType.READ)
+        return fetchDataUtil(database, tableName)
+    except Exception as e:        # Fetch data from write databse when Read Only fails
+        database = databaseConfig.connectDatabase(OperationType.WRITE)
+        return fetchDataUtil(database, tableName)
+        
 
 def fetchDataUtil(database, tableName):
     try:

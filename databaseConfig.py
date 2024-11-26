@@ -4,6 +4,9 @@ from google.auth import default
 from google.oauth2 import service_account
 from datetime import datetime, timezone
 from enum import Enum
+from constants import OperationType
+
+
     
 def connect_to_spanner_instance(service_account_path, instance_id, database_id):
     # Set the environment variable for authentication
@@ -28,6 +31,10 @@ def getWriteDbInstance():
     source_db = connect_to_spanner_instance(service_account_path_2_nchaud, instance_id_2_nchaud, database_id_2_nchaud)
     return source_db
 
-def connectDatabase(OperationType=None):
-    database = getWriteDbInstance()
-    return database
+def connectDatabase(operationType: OperationType = None):
+
+    if operationType == operationType.READ:
+        return getReadDbInstance()
+    elif operationType == operationType.WRITE:
+        return getWriteDbInstance()
+    raise Exception(f"Invalid operation")
