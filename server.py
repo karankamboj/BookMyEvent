@@ -10,8 +10,7 @@ def hello():
 @app.route('/fetch', methods=['GET'])
 def fetchData():
     table_name = request.args.get('table_name')
-    db = spanner.connectDatabase()
-    return spanner.fetchData(db, table_name)
+    return spanner.fetchData(table_name)
 
 @app.route('/insert', methods=['POST'])
 def insertData():
@@ -30,8 +29,7 @@ def insertData():
     if not table_name or not columns or not values:
         return jsonify({"error": "table_name, columns, and values are required"}), 400
     
-    db = spanner.connectDatabase()
-    result = spanner.insertData(db, table_name, columns, values)
+    result = spanner.insertData(table_name, columns, values)
     return jsonify({"message": result}), 200 if "successfully" in result.lower() else 500
 
 if __name__ == "__main__":

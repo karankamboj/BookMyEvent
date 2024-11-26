@@ -35,7 +35,7 @@ def getWriteDbInstance():
 
 def connectDatabase(OperationType=None):
 
-    database = getReadDbInstance()
+    database = getWriteDbInstance()
     return database
 
 def insertDataUtil(database, tableName, columns, dataToInsert):
@@ -50,10 +50,12 @@ def insertDataUtil(database, tableName, columns, dataToInsert):
     except Exception as e:
         return f"Data insertion failed because {e}"
 
-def insertData(database, tableName, columns, dataToInsert):
+def insertData(tableName, columns, dataToInsert):
+    database = connectDatabase()
     return insertDataUtil(database, tableName, columns, dataToInsert)
         
-def fetchData(database, tableName):
+def fetchData(tableName):
+    database = connectDatabase()
     return fetchDataUtil(database, tableName)
 
 def fetchDataUtil(database, tableName):
@@ -73,12 +75,11 @@ if __name__=="__main__":
     print(source_db_1)
     print(source_db_2)
 
-    db = connectDatabase()
     columns = ["user_id", "name", "email", "phone_number", "region", "created_at"]
     dataToInsert = [
         (2, 'Alice', 'alice@example.com', '123-456-7890', 'North America', datetime.now(timezone.utc)),
         (3, 'Shan', 'bob@example.com', '987-654-3210', 'Europe', datetime.now(timezone.utc)),
     ]
-    print(insertData(db, "users", columns, dataToInsert))
-    respose = fetchData(db, "users")
+    print(insertData("users", columns, dataToInsert))
+    respose = fetchData("users")
     print(respose)
