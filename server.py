@@ -56,6 +56,61 @@ def insertData():
     result = spanner.insertData(table_name, columns, values)
     return jsonify({"message": result}), 200 if "successfully" in result.lower() else 500
 
+
+def validateUpdateRequest(request_data):
+    if not request_data:
+        raise Exception({"error": "Invalid JSON payload"})
+    
+    # Extract required fields
+    table_name = request_data.get("table_name")
+    columns = request_data.get("columns")
+    values = request_data.get("values")
+    primary_col = request_data.get("primary_column")
+    primary_val = request_data.get("primary_value")
+    
+    # Validate the input
+    if not table_name or not columns or not values or not primary_col or not primary_val:
+        raise Exception({"error": "table_name, columns, values, primary_column, and primary_value are required"})
+    
+    return table_name, columns, values, primary_col, primary_val
+
+@app.route('/update', methods=['PUT'])
+def updateData():
+    # Parse request JSON
+    request_data = request.get_json()
+    table_name, columns, values, primary_col, primary_val = validateUpdateRequest(request_data)
+
+    # Update the data in the database
+    result = spanner.updateData(table_name, columns, values, primary_col, primary_val)
+    return jsonify({"message": result}), 200 if "successfully" in result.lower() else 500
+
+
+def validateDeleteRequest(request_data):
+    if not request_data:
+        raise Exception({"error": "Invalid JSON payload"})
+    
+    # Extract required fields
+    table_name = request_data.get("table_name")
+    primary_col = request_data.get("primary_column")
+    primary_val = request_data.get("primary_value")
+
+    # Validate the input
+    if not table_name or not primary_col or not primary_val:
+        raise Exception({"error": "table_name, primary_column, and primary_value are required"})
+
+    return table_name, primary_col, primary_val
+
+@app.route('/delete', methods=['DELETE'])
+def deleteData():
+    # Parse request JSON
+    request_data = request.get_json()
+    table_name, primary_col, primary_val = validateDeleteRequest(request_data)
+
+    # Delete the data from the database
+    result = spanner.deleteData(table_name, primary_col, primary_val)
+
+    return jsonify({"message": result}), 200 if "successfully" in result.lower() else 500
+
 def run_flask_app(port):
     app.run(host='0.0.0.0', port=port)
 
