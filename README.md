@@ -3,23 +3,23 @@
 ## Working with Elasticserach
 
 ### Download ElasticSearch and unzip by following the link.
-##### https://www.elastic.co/downloads/elasticsearch
+https://www.elastic.co/downloads/elasticsearch
 
 ### Start Elaticsearch server
-##### cd "your_elaticsearch_directory"
+cd "your_elaticsearch_directory"
 
 #### For Linux/MacOS
-##### bin/elasticsearch 
+bin/elasticsearch 
 
 #### For Windows
-##### bin\elasticsearch.bat 
+bin\elasticsearch.bat 
 
 ### Set Environment Variables to Authonticate Elasticsearch
 
 #### For Linux/MacOS
-##### export ELASTICSEARCH_USERNAME="your_username"
-##### export ELASTICSEARCH_PASSWORD="your_password"
+export ELASTICSEARCH_USERNAME="your_username"<br>
+export ELASTICSEARCH_PASSWORD="your_password"
 
 #### For Windows
-##### set ELASTICSEARCH_USERNAME=your_username
-##### set ELASTICSEARCH_PASSWORD=your_password
+set ELASTICSEARCH_USERNAME=your_username<br>
+set ELASTICSEARCH_PASSWORD=your_password
