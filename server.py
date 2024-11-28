@@ -13,6 +13,7 @@ def run_sync_task():
     This will keep syncing data from the write DB to the read-only DB every 5 minutes.
     """
     syncDatabase.startSyncJob()  # Starts the sync job which runs every 5 minutes
+    # syncDatabase.startIndexSyncJob()
     
 def before_first_request():
     """
