@@ -3,6 +3,7 @@ import threading
 import spanner
 from multiprocessing import Process
 import syncDatabase
+import elasticSearch
 
 app = Flask(__name__)
 
@@ -111,6 +112,74 @@ def deleteData():
 
     return jsonify({"message": result}), 200 if "successfully" in result.lower() else 500
 
+
+def validateSearchRequest(request_data):
+    if not request_data:
+        raise Exception({"error": "Invalid JSON payload"})
+    
+    # Extract required fields
+    query = request_data.get("query")
+    location_id = request_data.get("location_id")
+    category = request_data.get("category")
+    min_tickets = request_data.get("min_tickets", 0)
+    max_tickets = request_data.get("max_tickets", None)
+    date_time = request_data.get("date_time")
+
+
+    # Validate the input
+    if not query:
+        raise Exception({"error": "at least query param is required! Additional filters; location_id, category, min_tickets, max_tickets, and date_time can be passed."})
+
+    return query, location_id, category, min_tickets, max_tickets, date_time
+
+@app.route('/search', methods=['GET'])
+def search_events():
+    try:
+        request_data = request.get_json()
+        search_query, location_id, category, min_tickets, max_tickets, date_time = validateSearchRequest(request_data)
+
+        print(f"search_query:{search_query}")
+
+        # Build Elasticsearch query
+        query_body = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {"multi_match": {"query": search_query, "fields": ["name", "category"]}}
+                    ],
+                    "filter": []
+                }
+            }
+        }
+
+        # Add filters if provided
+        if location_id:
+            query_body["query"]["bool"]["filter"].append({"term": {"location_id": location_id}})
+        if category:
+            query_body["query"]["bool"]["filter"].append({"term": {"category": category}})
+        if min_tickets:
+            query_body["query"]["bool"]["filter"].append({
+                "range": {"available_tickets": {"gte": int(min_tickets)}}
+            })
+        if max_tickets:
+            query_body["query"]["bool"]["filter"].append({
+                "range": {"available_tickets": {"lte": int(max_tickets)}}
+            })
+        if date_time:
+            query_body["query"]["bool"]["filter"].append({
+                "range": {"date_time": {"gte": date_time}}
+            })
+
+        # Execute search
+        response = elasticSearch.es.search(index="event_index", body=query_body)
+
+        # Extract results
+        results = [hit["_source"] for hit in response["hits"]["hits"]]
+        return jsonify({"results": results}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 def run_flask_app(port):
     app.run(host='0.0.0.0', port=port)
 
