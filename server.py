@@ -7,6 +7,12 @@ import elasticSearch
 
 app = Flask(__name__)
 
+SERVER_NAME = None
+
+@app.before_request
+def log_server_name():
+    print(f"Request handled by {SERVER_NAME}")
+    
 def run_sync_task():
     """
     Runs the sync task in the background.
@@ -181,7 +187,9 @@ def search_events():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-def run_flask_app(port):
+def run_flask_app(port, server_name):
+    global SERVER_NAME
+    SERVER_NAME = server_name
     app.run(host='0.0.0.0', port=port)
 
 if __name__ == '__main__':
@@ -190,9 +198,9 @@ if __name__ == '__main__':
     before_first_request()
 
     # Create separate processes for each Flask instance on different ports
-    process1 = Process(target=run_flask_app, args=(5001,))
-    process2 = Process(target=run_flask_app, args=(5002,))
-    process3 = Process(target=run_flask_app, args=(5003,))
+    process1 = Process(target=run_flask_app, args=(5001, "Server 1"))
+    process2 = Process(target=run_flask_app, args=(5002, "Server 2  "))
+    process3 = Process(target=run_flask_app, args=(5003, "Server 3"))
 
     # Start all processes
     process1.start()
