@@ -4,6 +4,9 @@ import spanner
 from multiprocessing import Process
 import syncDatabase
 import elasticSearch
+import time
+import sqlite3
+import random
 
 app = Flask(__name__)
 
@@ -30,6 +33,62 @@ def before_first_request():
     sync_thread = threading.Thread(target=run_sync_task)
     sync_thread.daemon = True  # Ensure that the thread exits when the main program exits
     sync_thread.start()
+
+# Create an in-memory SQLite database and initialize the rate-limiting table
+db_connection = sqlite3.connect(":memory:", check_same_thread=False)
+cursor = db_connection.cursor()
+cursor.execute('''
+    CREATE TABLE rate_limit (
+        client_ip TEXT PRIMARY KEY,
+        attempts INTEGER DEFAULT 0,
+        last_attempt_time REAL DEFAULT 0
+    )
+''')
+db_connection.commit()
+
+# Configuration
+MAX_ATTEMPTS = 5
+BASE_DELAY = 0.5  # Base delay in seconds
+JITTER = 0.2      # Jitter in seconds
+BLOCK_TIME = 60   # Time in seconds before resetting attempts
+
+
+def rate_limit(client_ip):
+    """Implements rate-limiting with exponential backoff and jitter."""
+    current_time = time.time()
+
+    # Fetch client data from the database
+    cursor.execute("SELECT attempts, last_attempt_time FROM rate_limit WHERE client_ip = ?", (client_ip,))
+    row = cursor.fetchone()
+
+    if row:
+        attempts, last_attempt_time = row
+        # Check if the blocking period has passed
+        if current_time - last_attempt_time > BLOCK_TIME:
+            attempts = 0  # Reset attempts after the blocking period
+
+        # Check if the client exceeds the max attempts
+        if attempts >= MAX_ATTEMPTS:
+            # Calculate exponential backoff with jitter
+            delay = BASE_DELAY * (2 ** (attempts - MAX_ATTEMPTS)) + random.uniform(0, JITTER)
+            time.sleep(delay)
+            return False, f"Rate limit exceeded. Retrying in {round(delay, 2)} seconds."
+
+        # Update the attempts count
+        cursor.execute('''
+            UPDATE rate_limit 
+            SET attempts = ?, last_attempt_time = ?
+            WHERE client_ip = ?
+        ''', (attempts + 1, current_time, client_ip))
+    else:
+        # Insert a new record for the client
+        cursor.execute('''
+            INSERT INTO rate_limit (client_ip, attempts, last_attempt_time)
+            VALUES (?, ?, ?)
+        ''', (client_ip, 1, current_time))
+
+    db_connection.commit()
+    return True, "Request allowed."
 
 @app.route("/")
 def hello():
@@ -142,6 +201,12 @@ def validateSearchRequest(request_data):
 @app.route('/search', methods=['GET'])
 def search_events():
     try:
+        client_ip = request.remote_addr  # Get client IP
+        allowed, message = rate_limit(client_ip)
+
+        if not allowed:
+            return jsonify({"error": message}), 429  # Return HTTP 429 Too Many Requests
+
         request_data = request.get_json()
         search_query, location_id, category, min_tickets, max_tickets, date_time = validateSearchRequest(request_data)
 
