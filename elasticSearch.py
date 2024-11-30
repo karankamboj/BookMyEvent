@@ -27,7 +27,7 @@ def index_spanner_data():
                 "category": row[4],
                 "total_tickets": row[5],
                 "available_tickets": row[6],
-            }
+            }            
             # Index data in Elasticsearch
             es.index(index="event_index", id=row[0], body=doc)
 

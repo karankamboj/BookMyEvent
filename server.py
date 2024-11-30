@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import threading
 import spanner
 from multiprocessing import Process
@@ -27,7 +27,7 @@ def before_first_request():
 
 @app.route("/")
 def hello():
-    return "Hello, World!"
+    return "Hello!"
 
 @app.route('/fetch', methods=['GET'])
 def fetchData():

@@ -166,26 +166,13 @@ def sync_table_to_elasticsearch(spanner_db, table_name, index_name):
         except Exception as e:
             print(f"Error deleting document {doc_id} from {index_name}: {e}")
 
-    print(f"Successfully synced table {table_name} to Elasticsearch index {index_name}.")
-
-# def startIndexSyncJob():
-
-#     schedule.every(5).seconds.do(sync_table_to_elasticsearch(databaseConfig.getReadDbInstance(),'event','event_index'))
-#     print("Elasticsearch index sync job started.")
-    
-#     # Run the scheduler
-#     while True:
-#         schedule.run_pending()
-#         time.sleep(1)  # Sleep to prevent busy-waiting
-
-
 def startSyncJob():
     """
     Schedules the sync task to run every 5 minutes.
     """
     # Schedule the sync to run every 1 minutes
-    schedule.every(5).seconds.do(syncData)
-    schedule.every(5).seconds.do(syncIndexData)
+    schedule.every(60).seconds.do(syncData)
+    schedule.every(60).seconds.do(syncIndexData)
     
     print("Sync job started.")
     
