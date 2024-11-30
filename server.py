@@ -48,8 +48,8 @@ db_connection.commit()
 
 # Configuration
 MAX_ATTEMPTS = 5
-BASE_DELAY = 0.5  # Base delay in seconds
-JITTER = 0.2      # Jitter in seconds
+BASE_DELAY = 1.0  # Base delay in seconds
+JITTER = 0.5      # Jitter in seconds
 BLOCK_TIME = 60   # Time in seconds before resetting attempts
 
 
@@ -67,12 +67,15 @@ def rate_limit(client_ip):
         if current_time - last_attempt_time > BLOCK_TIME:
             attempts = 0  # Reset attempts after the blocking period
 
-        # Check if the client exceeds the max attempts
+        # Increment attempts and calculate exponential delay with jitter if above limit
         if attempts >= MAX_ATTEMPTS:
-            # Calculate exponential backoff with jitter
             delay = BASE_DELAY * (2 ** (attempts - MAX_ATTEMPTS)) + random.uniform(0, JITTER)
-            time.sleep(delay)
-            return False, f"Rate limit exceeded. Retrying in {round(delay, 2)} seconds."
+            time_since_last_attempt = current_time - last_attempt_time
+
+            # Enforce the delay only if the last attempt was too recent
+            if time_since_last_attempt < delay:
+                remaining_delay = delay - time_since_last_attempt
+                return False, f"Rate limit exceeded. Retry in {round(remaining_delay, 2)} seconds."
 
         # Update the attempts count
         cursor.execute('''
