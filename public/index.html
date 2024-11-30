@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Event Management Dashboard</h1>
+
+        <div class="form-container">
+            <section class="form-section">
+                <h2>Fetch Event Data</h2>
+                <form id="fetchForm">
+                    <label for="fetchTableName">Table Name:</label>
+                    <input type="text" id="fetchTableName" placeholder="Enter table name" required>
+                    <button type="submit" class="btn">Fetch</button>
+                </form>
+                <div id="fetchResult" class="result-box"></div>
+            </section>
+
+            <section class="form-section">
+                <h2>Insert Event Data</h2>
+                <form id="insertForm">
+                    <label for="insertTable">Table Name:</label>
+                    <input type="text" id="insertTable" placeholder="Enter table name" required>
+                    <label for="insertColumns">Columns (comma separated):</label>
+                    <input type="text" id="insertColumns" placeholder="e.g., col1, col2" required>
+                    <label for="insertValues">Values (comma separated):</label>
+                    <input type="text" id="insertValues" placeholder="e.g., val1, val2" required>
+                    <button type="submit" class="btn">Insert</button>
+                </form>
+                <div id="insertResult" class="result-box"></div>
+            </section>
+
+            <section class="form-section">
+                <h2>Update Event Data</h2>
+                <form id="updateForm">
+                    <label for="updateTable">Table Name:</label>
+                    <input type="text" id="updateTable" placeholder="Enter table name" required>
+                    <label for="updateColumns">Columns (comma separated):</label>
+                    <input type="text" id="updateColumns" placeholder="e.g., col1, col2" required>
+                    <label for="updateValues">Values (comma separated):</label>
+                    <input type="text" id="updateValues" placeholder="e.g., val1, val2" required>
+                    <label for="updatePrimaryColumn">Primary Column:</label>
+                    <input type="text" id="updatePrimaryColumn" placeholder="e.g., id" required>
+                    <label for="updatePrimaryValue">Primary Value:</label>
+                    <input type="text" id="updatePrimaryValue" placeholder="e.g., 123" required>
+                    <button type="submit" class="btn">Update</button>
+                </form>
+                <div id="updateResult" class="result-box"></div>
+            </section>
+
+            <section class="form-section">
+                <h2>Delete Event Data</h2>
+                <form id="deleteForm">
+                    <label for="deleteTable">Table Name:</label>
+                    <input type="text" id="deleteTable" placeholder="Enter table name" required>
+                    <label for="deletePrimaryColumn">Primary Column:</label>
+                    <input type="text" id="deletePrimaryColumn" placeholder="e.g., id" required>
+                    <label for="deletePrimaryValue">Primary Value:</label>
+                    <input type="text" id="deletePrimaryValue" placeholder="e.g., 123" required>
+                    <button type="submit" class="btn">Delete</button>
+                </form>
+                <div id="deleteResult" class="result-box"></div>
+            </section>
+
+            <section class="form-section">
+                <h2>Search Events</h2>
+                <form id="searchForm">
+                    <label for="searchQuery">Search Query:</label>
+                    <input type="text" id="searchQuery" placeholder="Enter search terms" required>
+                    
+                    <label for="searchLocation">Location ID:</label>
+                    <input type="text" id="searchLocation" placeholder="Enter location ID">
+            
+                    <label for="searchCategory">Category:</label>
+                    <input type="text" id="searchCategory" placeholder="Enter category">
+            
+                    <label for="minTickets">Min Tickets:</label>
+                    <input type="number" id="minTickets" placeholder="Minimum available tickets">
+            
+                    <label for="maxTickets">Max Tickets:</label>
+                    <input type="number" id="maxTickets" placeholder="Maximum available tickets">
+            
+                    <label for="dateTime">Date & Time:</label>
+                    <input type="datetime-local" id="dateTime">
+            
+                    <button type="submit" class="btn">Search</button>
+                </form>
+                <div id="searchResult" class="result-box"></div>
+            </section>
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
