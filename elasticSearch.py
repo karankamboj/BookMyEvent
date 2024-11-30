@@ -3,8 +3,8 @@ from google.cloud import spanner
 import databaseConfig
 import os
 
-username = "elastic"
-password ="kbUqgDQTB*I0BE=V47SJ"
+username = os.getenv("ELASTICSEARCH_USERNAME")
+password = os.getenv("ELASTICSEARCH_PASSWORD")
 
 # Initialize Elasticsearch client
 es = Elasticsearch('https://localhost:9200', basic_auth=(username, password), verify_certs=False)  # Replace with your Elasticsearch URL
