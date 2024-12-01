@@ -106,4 +106,4 @@ curl --location 'http://127.0.0.1:5001/search' \
 ### 4. Configure test parameters:
    - Number of total users to simulate
    - Spawn rate (users per second)
-   - Host URL
+   - Host/Server URL
