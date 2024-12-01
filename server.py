@@ -145,13 +145,13 @@ def validateSearchRequest(request_data):
 
     return query, location_id, category, min_tickets, max_tickets, date_time
 
-@app.route('/search', methods=['GET'])
+@app.route('/search', methods=['POST'])
 def search_events():
     try:
         request_data = request.get_json()
         search_query, location_id, category, min_tickets, max_tickets, date_time = validateSearchRequest(request_data)
 
-        print(f"search_query:{search_query}")
+        # print(f"search_query:{search_query}")
 
         # Build Elasticsearch query
         query_body = {

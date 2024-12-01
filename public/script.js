@@ -53,7 +53,7 @@ function createTable(data) {
 document.getElementById('fetchForm').onsubmit = async function (e) {
     e.preventDefault();
     const tableName = document.getElementById('fetchTableName').value;
-    const response = await fetch(`http://localhost:5001/fetch?table_name=${tableName}`);
+    const response = await fetch(`http://localhost:80/fetch?table_name=${tableName}`);
     const data = await response.json();
 
     // Display the data in the result box as a table
@@ -72,7 +72,7 @@ document.getElementById('searchForm').onsubmit = async function (e) {
 
     // Construct the request body
     const requestBody = {
-        search_query: searchQuery,
+        query: searchQuery,
         location_id: locationId,
         category: category,
         min_tickets: minTickets,
@@ -82,8 +82,8 @@ document.getElementById('searchForm').onsubmit = async function (e) {
 
     try {
         // Send request to the server for searching events
-        const response = await fetch('http://localhost:5001/search', {
-            method: 'GET',
+        const response = await fetch('http://localhost:80/search', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -112,7 +112,7 @@ document.getElementById('insertForm').onsubmit = async function (e) {
         values: values
     };
 
-    const response = await fetch('http://localhost:5001/insert', {
+    const response = await fetch('http://localhost:80/insert', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -141,7 +141,7 @@ document.getElementById('updateForm').onsubmit = async function (e) {
         primary_value: primaryValue
     };
 
-    const response = await fetch('http://localhost:5001/update', {
+    const response = await fetch('http://localhost:80/update', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -166,7 +166,7 @@ document.getElementById('deleteForm').onsubmit = async function (e) {
         primary_value: primaryValue
     };
 
-    const response = await fetch('http://localhost:5001/delete', {
+    const response = await fetch('http://localhost:80/delete', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
