@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import threading
+from rateLimit import rate_limit
 import spanner
 from multiprocessing import Process
 import syncDatabase
@@ -148,6 +149,11 @@ def validateSearchRequest(request_data):
 @app.route('/search', methods=['POST'])
 def search_events():
     try:
+        allowed, message = rate_limit()
+
+        if not allowed:
+            return jsonify({"error": message}), 429  # Return HTTP 429 Too Many Requests
+
         request_data = request.get_json()
         search_query, location_id, category, min_tickets, max_tickets, date_time = validateSearchRequest(request_data)
 
