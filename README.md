@@ -14,7 +14,7 @@ bin/elasticsearch
 #### For Windows
 bin\elasticsearch.bat 
 
-### Set Environment Variables to Authonticate Elasticsearch
+### Set Environment Variables to Authenticate Elasticsearch
 
 #### For Linux/MacOS
 export ELASTICSEARCH_USERNAME="your_username"<br>
