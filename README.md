@@ -91,3 +91,19 @@ curl --location 'http://127.0.0.1:5001/search' \
     "location_id": 1
 }'
 
+
+## To run the Locust performance tests:
+
+### 1. Install Locust:
+   pip install locust
+
+### 2. Run Locust:
+   locust 
+
+### 3. Open Locust web interface:
+   http://localhost:8089
+
+### 4. Configure test parameters:
+   - Number of total users to simulate
+   - Spawn rate (users per second)
+   - Host URL
