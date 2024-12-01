@@ -44,7 +44,7 @@ class EventBookingUserBehavior(HttpUser):
         # Randomly select a search scenario
         scenario = random.choice(search_scenarios)
 
-        with self.client.post(
+        with self.client.get(
             f"{self.base_url}/search", 
             json=scenario, 
             catch_response=True
